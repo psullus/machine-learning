@@ -13,7 +13,7 @@ Businesses are in every aspect of our lives from the moment we are born (and ear
 
 Understanding the overall sentiment of a business may help us make a more informed decision about which business we want to use for a given service and hence encourage businesses to be more conscience and pro-active about there public sentiment.
 
-There is a number of news articles on this topic:  
+There is a number of news articles on this topic highlight its importance:  
 * https://www.forbes.com/sites/jiawertz/2018/11/30/why-sentiment-analysis-could-be-your-best-kept-marketing-secret/#91f358e2bbec
 * https://www.businessinsider.com/negative-social-media-sentiment-hurts-sales-2013-6?r=US&IR=T
 * https://www.theguardian.com/news/datablog/2013/jul/15/reputation-management-business-swallow-bitter-pill
@@ -28,7 +28,6 @@ The main objective of the project will be to use Machine Learning to decide the 
 When give a string of text we want to be able to say whether the sentiment of the text is considered positive or negative.
 
 ### Datasets and Inputs
-_(approx. 2-3 paragraphs)_
 
 For this project we will use  a dataset  called [Sentiment140](http://help.sentiment140.com/for-students/). The dataset is split in both a training and testing set. The training set contains 1600000 tweets.
 
@@ -47,19 +46,22 @@ The tweets are classified as
 I can use the twitter [Standard search API](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets) to get real data as input.
 
 ### Solution Statement
-_(approx. 1 paragraph)_
 
-In this section, clearly describe a solution to the problem. The solution should be applicable to the project domain and appropriate for the dataset(s) or input(s) given. Additionally, describe the solution thoroughly such that it is clear that the solution is quantifiable (the solution can be expressed in mathematical or logical terms) , measurable (the solution can be measured by some metric and clearly observed), and replicable (the solution can be reproduced and occurs more than once).
+The proposed solution to this problem is to us the Natural Language Toolkit (NLTK) and Machine Learning technique that have proved to be successful in the classification of sentiment.
+
+First we will read the dataset (see Dataset section above) and do any pre-processing that is needed to make sure the data is as clean as possible. Then we will split the training and test set and build and compile our model, then evaluate and validate the accuracy of our model and finally get a prediction and accuracy score.
 
 ### Benchmark Model
-_(approximately 1-2 paragraphs)_
 
-In this section, provide the details for a benchmark model or result that relates to the domain, problem statement, and intended solution. Ideally, the benchmark model or result contextualizes existing methods or known information in the domain and problem given, which could then be objectively compared to the solution. Describe how the benchmark model or result is measurable (can be measured by some metric and clearly observed) with thorough detail.
+There are a number of projects on kaggle in this area.
+* [twitter-sentiment-analysis](https://www.kaggle.com/paoloripamonti/twitter-sentiment-analysis)
+* [python-nltk-sentiment-analysis]((https://www.kaggle.com/ngyptr/python-nltk-sentiment-analysis)
+
+Depending on my final solution I will use one of these projects to compare my accuracy score too.
 
 ### Evaluation Metrics
-_(approx. 1-2 paragraphs)_
 
-In this section, propose at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model. The evaluation metric(s) you propose should be appropriate given the context of the data, the problem statement, and the intended solution. Describe how the evaluation metric(s) are derived and provide an example of their mathematical representations (if applicable). Complex evaluation metrics should be clearly defined and quantifiable (can be expressed in mathematical or logical terms).
+The evaluation metric for this project is an accuracy score.
 
 ### Project Design
 _(approx. 1 page)_
@@ -69,3 +71,4 @@ In this final section, summarize a theoretical workflow for approaching a soluti
 ### References
 1. Sentiment140: [http://help.sentiment140.com/for-students/](http://help.sentiment140.com/for-students/)
 2. Twitter Search API: [https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets)
+3. Kaggle: [https://www.kaggle.com](https://www.kaggle.com)
