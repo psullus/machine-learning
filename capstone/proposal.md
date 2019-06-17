@@ -64,9 +64,13 @@ Depending on my final solution I will use one of these projects to compare my ac
 The evaluation metric for this project is an accuracy score.
 
 ### Project Design
-_(approx. 1 page)_
 
-In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
+There are a number of step needed to complete this project:
+* Exploration: Understand the data been used in this project. 
+* Preparation: May need tp preprocess the data so it is easier to work with. May also need to clean the data and/or encode the data.
+* Split: The data set comes with a training set and a test set but the test set seems very small. May need to split the training set further.
+* Model Training: Start training the model. Try different setting to improve the model. Make sure the model isn't under-fitting or over-fitting.
+* Evaluation: Look at the results the model is producing, accuracy score, confusion matrix and use that evaluation to try improve the model.
 
 ### References
 1. Sentiment140: [http://help.sentiment140.com/for-students/](http://help.sentiment140.com/for-students/)
