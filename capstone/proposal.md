@@ -23,9 +23,7 @@ My personal motivation for working on sentiment is to understand the importance 
 
 ### Problem Statement
 
-The main objective of the project will be to use Machine Learning to decide the sentiment of text. 
-
-When give a string of text we want to be able to say whether the sentiment of the text is considered positive or negative.
+The main objective of the project will be to use Machine Learning to decide the sentiment of text. When give a string of text we want to be able to say whether the sentiment of the text is considered positive or negative. If we can build a model that can accurately say whether a string of text is positive or negative we can then take live data feeds for various companies (from twitter or other sources) and track the public sentiment over time. 
 
 ### Datasets and Inputs
 
