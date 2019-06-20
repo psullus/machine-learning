@@ -53,7 +53,7 @@ First we will read the data-set (see Data-set section above) and do any pre-proc
 
 There are a number of projects on kaggle in this area.
 * [twitter-sentiment-analysis](https://www.kaggle.com/paoloripamonti/twitter-sentiment-analysis)
-* [python-nltk-sentiment-analysis]((https://www.kaggle.com/ngyptr/python-nltk-sentiment-analysis)
+* [python-nltk-sentiment-analysis](https://www.kaggle.com/ngyptr/python-nltk-sentiment-analysis)
 
 Depending on my final solution I will use one of these projects to compare my accuracy score too.
 
