@@ -13,6 +13,13 @@ Businesses are in every aspect of our lives from the moment we are born (and ear
 
 Understanding the overall sentiment of a business may help us make a more informed decision about which business we want to use for a given service and hence encourage businesses to be more conscience and pro-active about their public sentiment. It would also allow other businesses to decide which businesses they wish to partner with or provide/receive services from.
 
+Data Source:
+* [http://help.sentiment140.com/home](http://help.sentiment140.com/home)
+
+There are several research papers in this area:
+* [https://www.researchgate.net/publication/301649777_Analyzing_Scientific_Papers_Based_on_Sentiment_Analysis_First_Draft](https://www.researchgate.net/publication/301649777_Analyzing_Scientific_Papers_Based_on_Sentiment_Analysis_First_Draft)
+* [https://www.academia.edu/39483256/Business_Sentiment_Analysis._Concept_and_Method_for_Perceived_Anticipated_Effort_Identification](https://www.academia.edu/39483256/Business_Sentiment_Analysis._Concept_and_Method_for_Perceived_Anticipated_Effort_Identification)
+
 There are several news articles on this topic highlighting its importance:  
 * [https://www.forbes.com/sites/jiawertz/2018/11/30/why-sentiment-analysis-could-be-your-best-kept-marketing-secret/#91f358e2bbec](https://www.forbes.com/sites/jiawertz/2018/11/30/why-sentiment-analysis-could-be-your-best-kept-marketing-secret/#91f358e2bbec)
 * [https://www.businessinsider.com/negative-social-media-sentiment-hurts-sales-2013-6?r=US&IR=T](https://www.businessinsider.com/negative-social-media-sentiment-hurts-sales-2013-6?r=US&IR=T)
@@ -41,6 +48,8 @@ The tweets are classified as
 * 2 = neutral
 * 4 = positive
 
+Half (800000) of the tweets are classified as negative and half (800000) of the tweets are classified as positive. There are no neutral tweets in this data-set. This means the data-set is balanced so neither class should dominate during training.
+
 I can use the twitter [Standard search API](https://developer.twitter.com/en/docs/tweets/search/api-reference/get-search-tweets) to get real data as input.
 
 ### Solution Statement
@@ -51,11 +60,11 @@ First, we will read the data-set (see Data-set section above) and do any pre-pro
 
 ### Benchmark Model
 
-There are several projects on Kaggle in this area.
+There are several projects on Kaggle in this area which I can use to compare my approach.
 * [twitter-sentiment-analysis](https://www.kaggle.com/paoloripamonti/twitter-sentiment-analysis)
 * [python-nltk-sentiment-analysis](https://www.kaggle.com/ngyptr/python-nltk-sentiment-analysis)
 
-Depending on my final solution I will use one of these projects to compare my accuracy score too.
+As Naïve Bayes is a quick and easy way to predict classes I will use it as my benchmark model. At the very least my final solution should be as good if not better than this benchmark model.
 
 ### Evaluation Metrics
 
@@ -64,11 +73,20 @@ The evaluation metric for this project is an accuracy score.
 ### Project Design
 
 There are several steps needed to complete this project:
-* Exploration: Understand the data been used in this project. 
-* Preparation: May need to pre-process the data so it is easier to work with. May also need to clean the data and/or encode the data.
-* Split: The data set comes with a training set and a test set, but the test set seems very small. May need to split the training set further.
-* Model Training: Start training the model. Try different setting to improve the model. Make sure the model isn't under-fitting or over-fitting.
-* Evaluation: Look at the results the model is producing, accuracy score, confusion matrix and use that evaluation to try to improve the model.
+* __Exploration__:
+    * Understand the data been used in this project. In this phase I’ll download the data-set, have a look at it and see what I need to do to prepare it for preprocessing. For example, I’ve already hit the excel limit on opening the training file as it contains more than a million rows. I’ll use PowerShell to split the file.
+    `$i=0; Get-Content <PATH>\training.1600000.processed.noemoticon.csv -ReadCount 250000 | %{$i++; $_ | Out-File <PATH\splitfile_$i.csv}`
+* __Preprocessing__:
+    * In the phase I will look to clean the data to make it easier to work with. Will need to remove some features often seen in text like tweets, e.g. URLs, usernames, etc. 
+* __Split__:
+    * The data set comes with a training set and a test set, but the test set seems very small. May need to split the training set further.
+* __Models__:
+    * I will start with a Naïve Bayes model as it is a good model for text-based classification and I will use it as a benchmark and see if I can create an even better model. The data is labelled and Support Vector Machines (SVMs) are another good model for data classification so I will use SVMs for my second model.
+* __Model Training__:
+    * Start training the model. Try different setting to improve the model. Make sure the model isn't under-fitting or over-fitting.
+* __Evaluation__:
+    * Look at the results the model is producing, accuracy score, confusion matrix and use that evaluation to try to improve the model.
+
 
 ### References
 1. Sentiment140: [http://help.sentiment140.com/for-students/](http://help.sentiment140.com/for-students/)
