@@ -4,6 +4,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import time
+import pandas as pd
 
 class Model():
     """SVM Model"""
@@ -14,8 +15,6 @@ class Model():
         self.X_test = None
         self.y_train = None
         self.y_test = None
-        self.count_vector = None
-        self.tfidf_vector = None
         self.training_data = None
         self.testing_data = None
         self.svm = None
@@ -37,14 +36,25 @@ class Model():
     def cvDataset(self):
         if self.debug: print('In cvDataset')
         
-        self.count_vector = CountVectorizer()
-        self.training_data = self.count_vector.fit_transform(self.X_train)
-        self.testing_data = self.count_vector.transform(self.X_test)
+        count_vector = CountVectorizer(stop_words='english')
+        self.training_data = count_vector.fit_transform(self.X_train)
+        self.testing_data = count_vector.transform(self.X_test)
+        
+        if self.debug:
+            data = pd.DataFrame(self.training_data.toarray(), columns=count_vector.get_feature_names())
+            print(data.head())
 
     def tfidfDataset(self):
-        tfidf_vector = TfidfVectorizer(min_df = 5, max_df = 0.8, sublinear_tf = True, use_idf = True)
+        if self.debug: print('In tfidfDataset')
+            
+        #tfidf_vector = TfidfVectorizer(min_df = 5, max_df = 0.8, sublinear_tf = True, use_idf = True)
+        tfidf_vector = TfidfVectorizer(stop_words='english')
         self.training_data = tfidf_vector.fit_transform(self.X_train)
         self.testing_data = tfidf_vector.transform(self.X_test)
+
+        if self.debug:
+            data = pd.DataFrame(self.training_data.toarray(), columns=tfidf_vector.get_feature_names())
+            print(data.head())
 
     def fitSVM(self):
         if self.debug: print('In fitSVM')
@@ -67,7 +77,7 @@ class Model():
         if self.debug: print('In printScores')
         
         print(' ')
-        print('Accuracy score: ', format(accuracy_score(self.y_test, self.predictions)))
-        print('Precision score: ', format(precision_score(self.y_test, self.predictions, pos_label=posLabel)))
-        print('Recall score: ', format(recall_score(self.y_test, self.predictions, pos_label=posLabel)))
-        print('F1 score: ', format(f1_score(self.y_test, self.predictions, pos_label=posLabel)))
+        print('Accuracy score: ', format(accuracy_score(self.y_test, self.predictions), '.4f'))
+        print('Precision score: ', format(precision_score(self.y_test, self.predictions, pos_label=posLabel), '.4f'))
+        print('Recall score: ', format(recall_score(self.y_test, self.predictions, pos_label=posLabel), '.4f'))
+        print('F1 score: ', format(f1_score(self.y_test, self.predictions, pos_label=posLabel), '.4f'))
