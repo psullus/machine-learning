@@ -3,8 +3,11 @@ from sklearn import svm
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import confusion_matrix
 import time
 import pandas as pd
+from models.utils import Utils
+import matplotlib.pyplot as plt
 
 class Model():
     """SVM Model"""
@@ -32,6 +35,7 @@ class Model():
             print('Number of rows in the test set: {}'.format(self.X_test.shape[0]))
             print(' ')
             print(self.data.head())
+            print(' ')
 
     def cvDataset(self):
         if self.debug: print('In cvDataset')
@@ -43,6 +47,7 @@ class Model():
         if self.debug:
             data = pd.DataFrame(self.training_data.toarray(), columns=count_vector.get_feature_names())
             print(data.head())
+            print(' ')
 
     def tfidfDataset(self):
         if self.debug: print('In tfidfDataset')
@@ -55,6 +60,7 @@ class Model():
         if self.debug:
             data = pd.DataFrame(self.training_data.toarray(), columns=tfidf_vector.get_feature_names())
             print(data.head())
+            print(' ')
 
     def fitSVM(self):
         if self.debug: print('In fitSVM')
@@ -67,6 +73,7 @@ class Model():
         if self.debug:
             time_linear_train = t1-t0
             print("Training time: %fs" % (time_linear_train))
+            print(' ')
 
     def predict(self):
         if self.debug: print('In predict')
@@ -81,3 +88,18 @@ class Model():
         print('Precision score: ', format(precision_score(self.y_test, self.predictions, pos_label=posLabel), '.4f'))
         print('Recall score: ', format(recall_score(self.y_test, self.predictions, pos_label=posLabel), '.4f'))
         print('F1 score: ', format(f1_score(self.y_test, self.predictions, pos_label=posLabel), '.4f'))
+        print(' ')
+        
+    def plotConfusionMatrix(self):
+        if self.debug: print('In plotConfusionMatrix')
+        
+        utils = Utils(debug=True)
+        
+        # Compute confusion matrix
+        cnf_matrix = confusion_matrix(self.y_test, self.predictions)
+        plt.figure()
+        utils.plot_confusion_matrix(cnf_matrix, classes=['Positive','Negative'], title='Confusion matrix, without normalization')
+        plt.figure()
+        utils.plot_confusion_matrix(cnf_matrix, classes=['Positive','Negative'], normalize=True, title='Confusion matrix, with normalization')
+        
+        if self.debug: utils.printTP_FP_TN_FN(cnf_matrix)

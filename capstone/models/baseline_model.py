@@ -5,6 +5,8 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.metrics import confusion_matrix
 import time
 import pandas as pd
+from models.utils import Utils
+import matplotlib.pyplot as plt
 
 class BaselineModel():
     """Naive Bayes Model"""
@@ -32,7 +34,8 @@ class BaselineModel():
             print('Number of rows in the test set: {}'.format(self.X_test.shape[0]))
             print(' ')
             print(self.data.head())
-
+            print(' ')
+            
     def cvDataset(self):
         if self.debug: print('In cvDataset')
         
@@ -43,6 +46,7 @@ class BaselineModel():
         if self.debug:
             data = pd.DataFrame(self.training_data.toarray(), columns=count_vector.get_feature_names())
             print(data.head())
+            print(' ')
 
     def fitNaiveBayes(self):
         if self.debug: print('In fitNaiveBayes')
@@ -55,7 +59,8 @@ class BaselineModel():
         if self.debug:
             time_linear_train = t1-t0
             print("Training time: %fs" % (time_linear_train))
-
+            print(' ')
+            
     def predict(self):
         if self.debug: print('In predict')
         
@@ -69,9 +74,19 @@ class BaselineModel():
         print('Precision score: ', format(precision_score(self.y_test, self.predictions, pos_label=posLabel), '.4f'))
         print('Recall score: ', format(recall_score(self.y_test, self.predictions, pos_label=posLabel), '.4f'))
         print('F1 score: ', format(f1_score(self.y_test, self.predictions, pos_label=posLabel), '.4f'))
-
-    def printConfusionMatrix():
-        mat = confusion_matrix(tself.testing_data, self.y_test)
-        sns.heatmap(mat.T, square=True, annot=True, fmt='d', cbar=False, xticklabels=self.training_data.target_names, yticklabels=self.training_data.target_names)
-        plt.xlabel('true label')
-        plt.ylabel('predicted label');
+        print(' ')
+        
+    def plotConfusionMatrix(self):
+        if self.debug: print('In plotConfusionMatrix')
+        
+        utils = Utils(debug=True)
+        
+        # Compute confusion matrix
+        cnf_matrix = confusion_matrix(self.y_test, self.predictions)
+        plt.figure()
+        utils.plot_confusion_matrix(cnf_matrix, classes=['Positive','Negative'], title='Confusion matrix, without normalization')
+        plt.figure()
+        utils.plot_confusion_matrix(cnf_matrix, classes=['Positive','Negative'], normalize=True, title='Confusion matrix, with normalization')
+        
+        if self.debug: utils.printTP_FP_TN_FN(cnf_matrix)
+        
