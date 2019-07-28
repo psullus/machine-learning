@@ -8,6 +8,7 @@ import time
 import pandas as pd
 from models.utils import Utils
 import matplotlib.pyplot as plt
+import pickle
 
 class Model():
     """SVM Model"""
@@ -63,7 +64,7 @@ class Model():
             print(data.head())
             print(' ')
 
-    def fitSVM(self):
+    def fit(self):
         if self.debug: print('In fitSVM')
             
         self.svm = svm.SVC(kernel='linear')

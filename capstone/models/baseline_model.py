@@ -50,7 +50,7 @@ class BaselineModel():
             print(data.head())
             print(' ')
 
-    def fitNaiveBayes(self):
+    def fit(self):
         if self.debug: print('In fitNaiveBayes')
         
         self.naive_bayes = MultinomialNB()
