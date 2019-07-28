@@ -7,6 +7,7 @@ import time
 import pandas as pd
 from models.utils import Utils
 import matplotlib.pyplot as plt
+import pickle
 
 class BaselineModel():
     """Naive Bayes Model"""
@@ -101,3 +102,9 @@ class BaselineModel():
             print("This twit is negative (0)")
           
         return predict
+
+    def saveModelAndVector(self):
+        # pickling the vectorizer
+        pickle.dump(self.vector, open('baseline_vectorizer.sav', 'wb'))
+        # pickling the model
+        pickle.dump(self.naive_bayes, open('baseline_classifier.sav', 'wb'))

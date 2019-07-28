@@ -115,3 +115,9 @@ class Model():
             print("This twit is negative (0)")
             
         return predict
+
+    def saveModelAndVector(self):
+        # pickling the vectorizer
+        pickle.dump(self.vector, open('vectorizer.sav', 'wb'))
+        # pickling the model
+        pickle.dump(self.svm, open('classifier.sav', 'wb'))
