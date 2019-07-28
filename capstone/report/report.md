@@ -22,7 +22,7 @@ P(R|A):	Likelihood the probability of predictor given class.
 P(R):		Prior probability pf predictor.  
 P(A|R):	Posterior probability of class A given the predictor R.
 
-### Step to preform
+### Step to perform
 
 To use the Naïve Bayes algorithm to solve classification problems like deciding if text is positive or negative.
 
@@ -55,7 +55,7 @@ Also, when creating the frequency matrix, I was getting out of memory errors, so
 
 ### Preview of the data
 
-Image
+![data](data.png "data")
 
 Labels:	The sediment 0 for positive and 4 for negative.  
 Id:		The id of the twitter.  
@@ -63,9 +63,9 @@ Date:		The date of the twit.
 User:		The name of the twitter.  
 Text:		The text of the twit.
 
-The data is fairly balance between the target classes.
-* 4 (positive):	9477
-* 0 (negative):	8475
+The data is fairly balance between the target classes.  
+4 (positive):	9477  
+0 (negative):	8475
 
 ### Bag of words
 
@@ -73,7 +73,7 @@ The bag of words process is used when you have a collection of text (twit) data 
 
 I use the sklearn CountVectorizer class to convert the list of texts (twits) into a matrix with each text (twit) been a row and each word been a column. The corresponding row:column value is the frequency of the occurrence of each word in that twit.
 
-Image
+![freq_matrix](freq_matrix.png "freq_matrix")
 
 With the large amount of training data and the various characters people use in texts (twits) we have a lot of strange word in the column. It also means we have a lot of column 27387 (when we use the stop_words parameter).
 
@@ -148,7 +148,8 @@ With CountVectorizer
 * Recall score:  0.7723440134907251
 * F1 score:  0.7663668688558879
 
-		
+![base_cm_won](base_cm_won.png "base_cm_won")
+![base_cm_wn](base_cm_wn.png "base_cm_wn")
 
 ### Conclusion
 
@@ -160,11 +161,11 @@ Support Vector Machine (SVM)
 
 The support vector machine algorithm is to find a hyperplane in an N-dimensional space, where N is the number of features that distinctly classify the data points. Our objective is to find a plane that maximizes the distance between the two classes of data (positive and negative).
 
-
+![svm](svm.png "svm")
 
 SVM draws the hyperplane by transforming our data with the help of Kernels (mathematical functions). There are many types of Kernels (linear, sigmoid, rbf, polynomial) but as our problem is to classify data between positive and negative we will use the linear kernel for our model.
 
-### Step to preform
+### Step to perform
 
 To use the SVM algorithm to solve classification problems like deciding if text is positive or negative.
 
@@ -202,9 +203,9 @@ Same as baseline (see above).
 
 Term frequency and Inverse Document Frequency (TF-IDF) are word frequency scores that try to highlight words that are more interesting in a piece of text or twit. It looks at the frequency of words in a twit but not across twits.
 
-idf(t)=log??(1+n_d)/(1+df(d,t))+1?
+idf(t)=log(1+n_d)/(1+df(d,t))+1
 
-n_d = Number of documents.
+n_d = Number of documents.  
 df(d,t) = is the term present in number of documents.
 
 ### Split Dataset
@@ -240,7 +241,8 @@ With CountVectorizer
 * Recall score:  0.7647554806070826
 * F1 score:  0.749586776859504
 
-		
+![model_count_cm_won](model_count_cm_won.png "model_count_cm_won")
+![model_count_cm_wn](model_count_cm_wn.png "model_count_cm_wn")
 
 With TfidfVectorizer
 * Accuracy score:  0.7586898395721925
@@ -248,7 +250,8 @@ With TfidfVectorizer
 * Recall score:  0.7917369308600337
 * F1 score:  0.7761934283942964
 
-				
+![model_tfidf_cm_won](model_tfidf_cm_won.png "model_tfidf_cm_won")
+![model_tfidf_cm_wn](model_tfidf_cm_wn.png "model_tfidf_cm_wn")
 
 ### Conclusion
 
@@ -258,26 +261,12 @@ Removing the stop words helped reduce the number of features but I still have ov
 
 ### Scores Compared
 
-
-Naïve Bayes
-SVM/CountVectorizer
-SVM/TfidfVectorizer
-Accuracy
-0.7511
-0.7299
-0.7709
-Precision
-0.7605
-0.7350
-0.7786
-Recall
-0.7723
-0.7648
-0.7917
-F1
-0.7664
-0.7496
-0.7851
+|   | Naïve Bayes | SVM/CountVectorizer | SVM/TfidfVectorizer |
+| - | ----------- | ------------------- | ------------------- |
+| Accuracy | 0.7511 | 0.7299 | 0.7709 |
+| Precision | 0.7605 | 0.7350 | 0.7786 |
+| Recall | 0.7723 | 0.7648 | 0.7917 !
+| F1 | 0.7664 | 0.7496 | 0.7851 |
 
 For this project I don’t want businesses with positive sentiment to be labeled with negative sentiment, so I need a high Recall score. I also want to minimize the number of business with negative sentiment been labeled with positive sentiment, so I’d like a good precision score. But I will priorities Recall over Precision in a tradeoff.
 
