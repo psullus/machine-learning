@@ -22,13 +22,14 @@ class Model():
         self.testing_data = None
         self.svm = None
         self.predictions = None
+        self.vector = None
 
-    def splitData(self, p=False):
+    def splitData(self):
         if self.debug: print('In splitData')
         
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.data['Text'], self.data['Labels'], random_state=1)
 
-        if p:
+        if self.debug:
             print(' ')
             print('Number of rows in the total set: {}'.format(self.data.shape[0]))
             print('Number of rows in the training set: {}'.format(self.X_train.shape[0]))
@@ -40,12 +41,12 @@ class Model():
     def cvDataset(self):
         if self.debug: print('In cvDataset')
         
-        count_vector = CountVectorizer(stop_words='english')
-        self.training_data = count_vector.fit_transform(self.X_train)
-        self.testing_data = count_vector.transform(self.X_test)
+        self.vector = CountVectorizer(stop_words='english')
+        self.training_data = self.vector.fit_transform(self.X_train)
+        self.testing_data = self.vector.transform(self.X_test)
         
         if self.debug:
-            data = pd.DataFrame(self.training_data.toarray(), columns=count_vector.get_feature_names())
+            data = pd.DataFrame(self.training_data.toarray(), columns=self.vector.get_feature_names())
             print(data.head())
             print(' ')
 
@@ -53,21 +54,21 @@ class Model():
         if self.debug: print('In tfidfDataset')
             
         #tfidf_vector = TfidfVectorizer(min_df = 5, max_df = 0.8, sublinear_tf = True, use_idf = True)
-        tfidf_vector = TfidfVectorizer(stop_words='english')
-        self.training_data = tfidf_vector.fit_transform(self.X_train)
-        self.testing_data = tfidf_vector.transform(self.X_test)
+        self.vector = TfidfVectorizer(stop_words='english')
+        self.training_data = self.vector.fit_transform(self.X_train)
+        self.testing_data = self.vector.transform(self.X_test)
 
         if self.debug:
-            data = pd.DataFrame(self.training_data.toarray(), columns=tfidf_vector.get_feature_names())
+            data = pd.DataFrame(self.training_data.toarray(), columns=self.vector.get_feature_names())
             print(data.head())
             print(' ')
 
     def fitSVM(self):
         if self.debug: print('In fitSVM')
             
-        self.svn = svm.SVC(kernel='linear')
+        self.svm = svm.SVC(kernel='linear')
         t0 = time.time()
-        self.svn.fit(self.training_data, self.y_train)
+        self.svm.fit(self.training_data, self.y_train)
         t1 = time.time()
         
         if self.debug:
@@ -78,7 +79,7 @@ class Model():
     def predict(self):
         if self.debug: print('In predict')
         
-        self.predictions = self.svn.predict(self.testing_data)
+        self.predictions = self.svm.predict(self.testing_data)
 
     def printScores(self, posLabel=4):
         if self.debug: print('In printScores')
@@ -98,8 +99,19 @@ class Model():
         # Compute confusion matrix
         cnf_matrix = confusion_matrix(self.y_test, self.predictions)
         plt.figure()
-        utils.plot_confusion_matrix(cnf_matrix, classes=['Positive','Negative'], title='Confusion matrix, without normalization')
+        utils.plot_confusion_matrix(cnf_matrix, classes=['Pos Sendiment','Neg Sendiment'], title='Confusion matrix, without normalization')
         plt.figure()
-        utils.plot_confusion_matrix(cnf_matrix, classes=['Positive','Negative'], normalize=True, title='Confusion matrix, with normalization')
+        utils.plot_confusion_matrix(cnf_matrix, classes=['Pos Sendiment','Neg Sendiment'], normalize=True, title='Confusion matrix, with normalization')
         
         if self.debug: utils.printTP_FP_TN_FN(cnf_matrix)
+
+    def testTwit(self, twit):
+        review_vector = self.vector.transform([twit]) # vectorizing
+        predict = self.svm.predict(review_vector)
+        
+        if predict == 4:
+            print("This twit is positive (4)")
+        else:
+            print("This twit is negative (0)")
+            
+        return predict

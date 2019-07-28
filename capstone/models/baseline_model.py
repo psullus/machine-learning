@@ -21,13 +21,14 @@ class BaselineModel():
         self.testing_data = None
         self.naive_bayes = None
         self.predictions = None
+        self.vector = None
 
-    def splitData(self, p=False):
+    def splitData(self):
         if self.debug: print('In splitData')
         
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.data['Text'], self.data['Labels'], random_state=1)
 
-        if p:
+        if self.debug:
             print(' ')
             print('Number of rows in the total set: {}'.format(self.data.shape[0]))
             print('Number of rows in the training set: {}'.format(self.X_train.shape[0]))
@@ -39,12 +40,12 @@ class BaselineModel():
     def cvDataset(self):
         if self.debug: print('In cvDataset')
         
-        count_vector = CountVectorizer(stop_words='english')
-        self.training_data = count_vector.fit_transform(self.X_train)
-        self.testing_data = count_vector.transform(self.X_test)
+        self.vector = CountVectorizer(stop_words='english')
+        self.training_data = self.vector.fit_transform(self.X_train)
+        self.testing_data = self.vector.transform(self.X_test)
 
         if self.debug:
-            data = pd.DataFrame(self.training_data.toarray(), columns=count_vector.get_feature_names())
+            data = pd.DataFrame(self.training_data.toarray(), columns=self.vector.get_feature_names())
             print(data.head())
             print(' ')
 
@@ -84,9 +85,19 @@ class BaselineModel():
         # Compute confusion matrix
         cnf_matrix = confusion_matrix(self.y_test, self.predictions)
         plt.figure()
-        utils.plot_confusion_matrix(cnf_matrix, classes=['Positive','Negative'], title='Confusion matrix, without normalization')
+        utils.plot_confusion_matrix(cnf_matrix, classes=['Pos Sendiment','Neg Sendiment'], title='Confusion matrix, without normalization')
         plt.figure()
-        utils.plot_confusion_matrix(cnf_matrix, classes=['Positive','Negative'], normalize=True, title='Confusion matrix, with normalization')
+        utils.plot_confusion_matrix(cnf_matrix, classes=['Pos Sendiment','Neg Sendiment'], normalize=True, title='Confusion matrix, with normalization')
         
         if self.debug: utils.printTP_FP_TN_FN(cnf_matrix)
+
+    def testTwit(self, twit):
+        review_vector = self.vector.transform([twit]) # vectorizing
+        predict = self.naive_bayes.predict(review_vector)
         
+        if predict == 4:
+            print("This twit is positive (4)")
+        else:
+            print("This twit is negative (0)")
+          
+        return predict
