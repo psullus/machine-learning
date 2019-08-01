@@ -3,11 +3,14 @@ import numpy as np
 import itertools as itertools
 
 class Utils():
-    """Utilities class"""
+    """ Utilities """
+    
     def __init__(self, debug=False):
         self.debug = debug
 
     def plot_confusion_matrix(self, cm, classes, normalize=False, title='Confusion matrix', cmap=plt.cm.Blues):
+        """ Plot a confusion matrix """
+        
         if self.debug: print('In plot_confusion_matrix')
 
         if normalize:
@@ -17,8 +20,6 @@ class Utils():
         else:
             print('Confusion matrix, without normalization')
             print(' ')
-        
-        #print(cm)
         
         plt.imshow(cm, interpolation='nearest', cmap=cmap)
         plt.title(title)
@@ -39,6 +40,8 @@ class Utils():
         plt.tight_layout()
 
     def printTP_FP_TN_FN(self, cnfm):
+        """ Print, True Negatives, False Positives, False Negatives, True Positives """
+        
         if self.debug: print('In printTP_FP_TN_FN')
         
         # Print true_positives, false_positives, true_negatives, false_negatives

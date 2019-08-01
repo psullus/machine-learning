@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 import pickle
 
 class BaselineModel():
-    """Naive Bayes Model"""
+    """ Naive Bayes Model """
+
     def __init__(self, data, debug=False):
         self.data = data
         self.debug = debug
@@ -25,6 +26,8 @@ class BaselineModel():
         self.vector = None
 
     def splitData(self):
+        """ Split the data-set into training and testing data. """
+        
         if self.debug: print('In splitData')
         
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.data['Text'], self.data['Labels'], random_state=1)
@@ -39,6 +42,8 @@ class BaselineModel():
             print(' ')
             
     def cvDataset(self):
+        """ Vectorizer the training and texting data with CountVectorizer. """
+        
         if self.debug: print('In cvDataset')
         
         self.vector = CountVectorizer(stop_words='english')
@@ -51,6 +56,8 @@ class BaselineModel():
             print(' ')
 
     def fit(self):
+        """ Create a model and fit the training data. """
+        
         if self.debug: print('In fitNaiveBayes')
         
         self.naive_bayes = MultinomialNB()
@@ -64,11 +71,15 @@ class BaselineModel():
             print(' ')
             
     def predict(self):
+        """ Use the testing data to get the model to make predictons. """
+        
         if self.debug: print('In predict')
         
         self.predictions = self.naive_bayes.predict(self.testing_data)
 
     def printScores(self, posLabel=4):
+        """ Use the score functions to combine the test data with the predictions. """
+        
         if self.debug: print('In printScores')
         
         print(' ')
@@ -79,11 +90,12 @@ class BaselineModel():
         print(' ')
         
     def plotConfusionMatrix(self):
+        """ Plot a confusion matrix. """
+        
         if self.debug: print('In plotConfusionMatrix')
         
         utils = Utils(debug=True)
-        
-        # Compute confusion matrix
+
         cnf_matrix = confusion_matrix(self.y_test, self.predictions)
         plt.figure()
         utils.plot_confusion_matrix(cnf_matrix, classes=['Pos Sendiment','Neg Sendiment'], title='Confusion matrix, without normalization')
@@ -92,8 +104,10 @@ class BaselineModel():
         
         if self.debug: utils.printTP_FP_TN_FN(cnf_matrix)
 
-    def testTwit(self, twit):
-        review_vector = self.vector.transform([twit]) # vectorizing
+    def getTextSentiment(self, text):
+        """ Use the model to get the sentiment of text. """
+        
+        review_vector = self.vector.transform([text]) # vectorizing
         predict = self.naive_bayes.predict(review_vector)
         
         if predict == 4:
@@ -104,7 +118,7 @@ class BaselineModel():
         return predict
 
     def saveModelAndVector(self):
-        # pickling the vectorizer
+        """ Save the model and vector to disk. """
+        
         pickle.dump(self.vector, open('baseline_vectorizer.sav', 'wb'))
-        # pickling the model
         pickle.dump(self.naive_bayes, open('baseline_classifier.sav', 'wb'))

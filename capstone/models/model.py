@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 import pickle
 
 class Model():
-    """SVM Model"""
+    """ SVM Model """
+
     def __init__(self, data, debug=False):
         self.data = data
         self.debug = debug
@@ -26,6 +27,8 @@ class Model():
         self.vector = None
 
     def splitData(self):
+        """ Split the data-set into training and testing data. """
+        
         if self.debug: print('In splitData')
         
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.data['Text'], self.data['Labels'], random_state=1)
@@ -40,6 +43,8 @@ class Model():
             print(' ')
 
     def cvDataset(self):
+        """ Vectorizer the training and texting data with CountVectorizer. """
+        
         if self.debug: print('In cvDataset')
         
         self.vector = CountVectorizer(stop_words='english')
@@ -52,6 +57,8 @@ class Model():
             print(' ')
 
     def tfidfDataset(self):
+        """ Vectorizer the training and texting data with TfidfVectorizer. """
+        
         if self.debug: print('In tfidfDataset')
             
         #tfidf_vector = TfidfVectorizer(min_df = 5, max_df = 0.8, sublinear_tf = True, use_idf = True)
@@ -65,6 +72,8 @@ class Model():
             print(' ')
 
     def fit(self):
+        """ Create a model and fit the training data. """
+        
         if self.debug: print('In fitSVM')
             
         self.svm = svm.SVC(kernel='linear')
@@ -78,11 +87,15 @@ class Model():
             print(' ')
 
     def predict(self):
+        """ Use the testing data to get the model to make predictons. """
+        
         if self.debug: print('In predict')
         
         self.predictions = self.svm.predict(self.testing_data)
 
     def printScores(self, posLabel=4):
+        """ Use the score functions to combine the test data with the predictions. """
+        
         if self.debug: print('In printScores')
         
         print(' ')
@@ -93,11 +106,12 @@ class Model():
         print(' ')
         
     def plotConfusionMatrix(self):
+        """ Plot a confusion matrix. """
+        
         if self.debug: print('In plotConfusionMatrix')
         
         utils = Utils(debug=True)
         
-        # Compute confusion matrix
         cnf_matrix = confusion_matrix(self.y_test, self.predictions)
         plt.figure()
         utils.plot_confusion_matrix(cnf_matrix, classes=['Pos Sendiment','Neg Sendiment'], title='Confusion matrix, without normalization')
@@ -106,8 +120,10 @@ class Model():
         
         if self.debug: utils.printTP_FP_TN_FN(cnf_matrix)
 
-    def testTwit(self, twit):
-        review_vector = self.vector.transform([twit]) # vectorizing
+    def getTextSentiment(self, text):
+        """ Use the model to get the sentiment of text. """
+        
+        review_vector = self.vector.transform([text]) # vectorizing
         predict = self.svm.predict(review_vector)
         
         if predict == 4:
@@ -118,7 +134,7 @@ class Model():
         return predict
 
     def saveModelAndVector(self):
-        # pickling the vectorizer
+        """ Save the model and vector to disk. """
+        
         pickle.dump(self.vector, open('vectorizer.sav', 'wb'))
-        # pickling the model
         pickle.dump(self.svm, open('classifier.sav', 'wb'))
